@@ -4,7 +4,7 @@ MILP-based job scheduler plugin for Snakemake.
 This module provides an enhanced job scheduler that uses mixed-integer linear programming
 to optimize job execution across heterogeneous computing resources.
 
-Plugin name: milp-ext (avoiding forbidden name "milp")
+Plugin name: milp_ext (avoiding forbidden name "milp")
 """
 
 import json

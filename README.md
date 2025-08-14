@@ -2,7 +2,7 @@
 
 A **pip-installable** scheduler plugin for [Snakemake](https://snakemake.readthedocs.io/) that uses Mixed-Integer Linear Programming (MILP) to optimally schedule jobs across heterogeneous compute resources.
 
-**Plugin Name**: `milp-ext` (Note: `milp` is reserved for Snakemake's internal scheduler)
+**Plugin Name**: `milp_ext` (Note: `milp` is reserved for Snakemake's internal scheduler)
 
 ## Features
 
@@ -18,14 +18,14 @@ A **pip-installable** scheduler plugin for [Snakemake](https://snakemake.readthe
 ### From PyPI (when published)
 
 ```bash
-pip install snakemake-scheduler-plugin-milp-ext
+pip install snakemake-scheduler-plugin-milp_ext
 ```
 
 ### From Source
 
 ```bash
-git clone https://github.com/AasishKumarSharma/snakemake-scheduler-plugin-milp-ext.git
-cd snakemake-scheduler-plugin-milp-ext
+git clone https://github.com/AasishKumarSharma/snakemake-scheduler-plugin-milp_ext.git
+cd snakemake-scheduler-plugin-milp_ext
 pip install .
 ```
 
@@ -87,17 +87,17 @@ pip install -e .[dev]
 2. **Run Snakemake with MILP Optimizer Scheduler**:
 
 ```bash
-snakemake --scheduler milp-ext \
-          --scheduler-milp-ext-system-profile system_profile.json \
+snakemake --scheduler milp_ext \
+          --scheduler-milp_ext-system-profile system_profile.json \
           --cores 8
 ```
 
 Or with plugin settings:
 
 ```bash
-snakemake --scheduler milp-ext \
-          --scheduler-milp-ext-time-limit 60 \
-          --scheduler-milp-ext-fallback greedy \
+snakemake --scheduler milp_ext \
+          --scheduler-milp_ext-time-limit 60 \
+          --scheduler-milp_ext-fallback greedy \
           --cores 8
 ```
 
@@ -132,10 +132,10 @@ rule gpu_job:
 
 ### Plugin Settings (CLI)
 
-- `--scheduler-milp-ext-system-profile`: Path to system profile JSON
-- `--scheduler-milp-ext-scheduler-config`: Path to scheduler config YAML
-- `--scheduler-milp-ext-time-limit`: MILP solver time limit in seconds (default: 30)
-- `--scheduler-milp-ext-fallback`: Fallback scheduler (default: "greedy")
+- `--scheduler-milp_ext-system-profile`: Path to system profile JSON
+- `--scheduler-milp_ext-scheduler-config`: Path to scheduler config YAML
+- `--scheduler-milp_ext-time-limit`: MILP solver time limit in seconds (default: 30)
+- `--scheduler-milp_ext-fallback`: Fallback scheduler (default: "greedy")
 
 ## Testing
 
