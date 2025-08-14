@@ -396,10 +396,80 @@ class Scheduler(SchedulerBase):
         return self._get_default_system_profile()
 
     def _get_default_system_profile(self):
-        """Create a default system profile based on available resources."""
-        # Try to get total cores from available resources
+        """Create a default system profile based on actual host machine resources."""
+        import platform
+        import shutil
+        
+        # Try to get actual system resources
         total_cores = 4  # Default fallback
-        total_memory = 8192  # Default 8GB
+        total_memory = 8192  # Default 8GB fallback
+        available_storage = 10000  # Default 10GB fallback
+        gpu_count = 0
+        features = ["cpu"]
+        
+        try:
+            # Get actual CPU count
+            total_cores = os.cpu_count() or 4
+            
+            # Try to get memory using psutil if available
+            try:
+                import psutil
+                memory_info = psutil.virtual_memory()
+                total_memory = int(memory_info.total / (1024 * 1024))  # Convert bytes to MB
+                
+                # Get available disk space
+                disk_usage = shutil.disk_usage("/")
+                available_storage = int(disk_usage.free / (1024 * 1024))  # Convert bytes to MB
+                # Cap storage at reasonable amount for scheduling
+                available_storage = min(available_storage, 100000)  # Max 100GB
+                
+            except ImportError:
+                self.logger.warning("psutil not available, using default memory values")
+            
+            # Detect architecture
+            arch = platform.machine().lower()
+            if "x86_64" in arch or "amd64" in arch:
+                features.append("x86_64")
+            elif "arm" in arch or "aarch64" in arch:
+                features.append("arm64")
+            else:
+                features.append("x86_64")  # Default assumption
+            
+            # Try to detect GPU
+            try:
+                import GPUtil
+                gpus = GPUtil.getGPUs()
+                gpu_count = len(gpus)
+                if gpu_count > 0:
+                    features.append("gpu")
+            except ImportError:
+                # Fallback GPU detection
+                if os.path.exists("/proc/driver/nvidia/version") or os.path.exists("/dev/dri"):
+                    gpu_count = 1
+                    features.append("gpu")
+            
+            # Estimate performance characteristics based on detected hardware
+            try:
+                import psutil
+                cpu_freq = psutil.cpu_freq()
+                base_freq = cpu_freq.current if cpu_freq else 2000  # MHz
+            except:
+                base_freq = 2000  # Default 2GHz
+            
+            # Rough performance estimates
+            physical_cores = total_cores // 2 if total_cores > 4 else total_cores  # Assume hyperthreading
+            estimated_flops = int(physical_cores * base_freq * 1000000 * 4)  # 4 ops per cycle estimate
+            estimated_memory_bandwidth = min(25000, total_memory // 10)  # Conservative bandwidth estimate
+            estimated_read_speed = 1500 if available_storage > 50000 else 500  # SSD vs HDD estimate
+            estimated_write_speed = int(estimated_read_speed * 0.8)
+            
+        except Exception as e:
+            self.logger.warning(f"Error detecting system resources: {e}. Using defaults.")
+            # Keep fallback values
+            estimated_flops = 100000000000
+            estimated_memory_bandwidth = 10000
+            estimated_read_speed = 1000
+            estimated_write_speed = 800
 
         return {
             "clusters": {
@@ -409,15 +479,15 @@ class Scheduler(SchedulerBase):
                             "resources": {
                                 "cores": total_cores,
                                 "memory_mb": total_memory,
-                                "gpu_count": 0,
-                                "local_storage_mb": 10000,
+                                "gpu_count": gpu_count,
+                                "local_storage_mb": available_storage,
                             },
-                            "features": ["cpu", "x86_64"],
+                            "features": features,
                             "properties": {
-                                "cpu_flops": 100000000000,
-                                "memory_bandwidth_mbps": 10000,
-                                "read_mbps": 1000,
-                                "write_mbps": 800,
+                                "cpu_flops": estimated_flops,
+                                "memory_bandwidth_mbps": estimated_memory_bandwidth,
+                                "read_mbps": estimated_read_speed,
+                                "write_mbps": estimated_write_speed,
                             },
                         }
                     }
