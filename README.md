@@ -145,6 +145,52 @@ Run the test suite:
 pytest tests/
 ```
 
+---
+
+## Contributing
+
+1. Fork and clone the repo
+2. Create a branch: `git checkout -b feature/new-flag`
+3. Implement changes and add tests
+4. Ensure all tests pass: `pytest`
+5. Submit a pull request
+
+Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+
+---
+
+## Reference
+
+If you use this repository or its code, please cite the following paper:
+
+> **Aasish Kumar Sharma, Julian Kunkel et. al.**  
+> *Workflow-Driven Modeling for the Compute Continuum: An Optimization Approach to Automated System and Workload Scheduling*  
+> In: *Proceedings of the 2025 IEEE 49th Annual Computers, Software, and Applications Conference (COMPSAC)*, IEEE, 2025.  
+> DOI: [10.1109/COMPSAC65507.2025.00343](https://doi.org/10.1109/COMPSAC65507.2025.00343)  
+> arXiv: [2506.00260](https://arxiv.org/abs/2506.00260)
+
+📘 Official IEEE Xplore entry:  
+[https://ieeexplore.ieee.org/document/11126665](https://ieeexplore.ieee.org/document/11126665)
+
+---
+
+## Citation
+
+```bibtex
+@inproceedings{sharma2025grapheonrl,
+  author = {Aasish Kumar Sharma and Julian Kunkel},
+  title = {Workflow-Driven Modeling for the Compute Continuum: An Optimization Approach to Automated System and Workload Scheduling},
+  booktitle = {2025 IEEE 49th Annual Computers, Software, and Applications Conference (COMPSAC)},
+  year = {2025},
+  publisher = {IEEE},
+  doi = {10.1109/COMPSAC65507.2025.00343},
+  url = {https://doi.org/10.1109/COMPSAC65507.2025.00343}
+}
+```
+
+
+
+
 ## License
 
 This project is licensed under the MIT License.
