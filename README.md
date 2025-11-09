@@ -169,7 +169,7 @@ If you use this repository or its code, please cite the following paper:
 > DOI: [10.1109/COMPSAC65507.2025.00343](https://doi.org/10.1109/COMPSAC65507.2025.00343)  
 > arXiv: [2506.00260](https://arxiv.org/abs/2506.00260)
 
-📘 Official IEEE Xplore entry:  
+Official IEEE Xplore entry:  
 [https://ieeexplore.ieee.org/document/11126665](https://ieeexplore.ieee.org/document/11126665)
 
 ---
